@@ -2,7 +2,7 @@ const express = require('express')
 const Companion = require('./companions-model')
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
+router.get('/companions', (req, res, next) => {
     try {
         const companions = Companion.getAll()
         res.status(200).json(companions)
