@@ -1,21 +1,27 @@
 const db = require('../../data/db-config')
 
-function get() {
-    return db.map(people => {
-        return { companion: people.companion }
-    })
-}
-const insert = people => {
-    return {
-        message: 'you did it! you added a new companion',
-        companion: `${people.companion}`
-    }
-}
-const login = people => {
-    return {
-        message: 'you did it! you logged in',
-        companion: `${people.companion}`
-    }
+module.exports = {
+    insert,
+    getAll,
+    getById,
+    remove
 }
 
-module.exports = { get, insert, login }
+function getAll() {
+    return db('companions')
+}
+
+function getById(id) {
+    return db('companions')
+        .where('id', id)
+}
+
+async function insert(companion) {
+    const [id] = await db('companions').insert(companion);
+    return getById(id)
+}
+function remove(id){
+    const deletedCompanion = getById(id);
+    db('posts').where('id', id).del();
+    return deletedCompanion;
+}
